@@ -8,7 +8,7 @@ public class Application extends AbstractVerticle {
     public void start(Future<Void> f) throws Exception {
         vertx.createHttpServer()
                 .requestHandler(req -> {
-                    req.response().end("Hello Vert.x");
+                    req.response().end("Hello Vert.x!");
                 })
                 .listen(8080, result -> {
                     if (result.succeeded()) {

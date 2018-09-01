@@ -7,9 +7,13 @@ plugins {
 group 'com.boring'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 11
+sourceCompatibility = 1.8
 mainClassName = 'io.vertx.core.Launcher'
+
+def vertxVersion = '3.5.3'
 def mainVerticleName = 'com.boring.Application'
+def watchForChange = 'src/**/*'
+def doOnChange = 'gradle classes'
 
 repositories {
     mavenCentral()
@@ -17,10 +21,12 @@ repositories {
 
 dependencies {
     compile(
-            'io.vertx:vertx-core:3.5.3',
-            'io.vertx:vertx-unit:3.5.3',
+            "io.vertx:vertx-core:$vertxVersion",
     )
-    testCompile 'junit:junit:4.12'
+    testCompile(
+            "io.vertx:vertx-unit:$vertxVersion",
+            'junit:junit:4.12',
+    )
 }
 
 shadowJar {
@@ -31,4 +37,8 @@ shadowJar {
     mergeServiceFiles {
         include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
     }
+}
+
+run {
+    args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
 }
