@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+}
+
+group 'com.boring'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11
+mainClassName = 'io.vertx.core.Launcher'
+def mainVerticleName = 'com.boring.Application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(
+            'io.vertx:vertx-core:3.5.3',
+            'io.vertx:vertx-unit:3.5.3',
+    )
+    testCompile 'junit:junit:4.12'
+}
+
+shadowJar {
+    classifier = 'fat'
+    manifest {
+        attributes "Main-Verticle": mainVerticleName
+    }
+    mergeServiceFiles {
+        include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
+}
